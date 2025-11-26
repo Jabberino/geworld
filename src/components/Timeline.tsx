@@ -24,12 +24,13 @@ const Timeline = () => {
     const current = new Date(currentDate).getTime();
     const daysSinceStart = (current - START_DATE) / (1000 * 60 * 60 * 24);
     const targetX = -daysSinceStart * PIXELS_PER_DAY;
-    
+
     // Animate to position if playing, otherwise jump
     if (isPlaying) {
-        animate(x, targetX, { duration: 1, ease: "linear" });
+      animate(x, targetX, { duration: 1, ease: "linear" });
     } else {
-        x.set(targetX);
+      // Smooth scroll on click/manual change
+      animate(x, targetX, { duration: 1, ease: "easeInOut" });
     }
   }, [currentDate, isDragging, isPlaying, x]);
 
@@ -41,9 +42,9 @@ const Timeline = () => {
         const current = new Date(currentDate).getTime();
         const next = current + (1000 * 60 * 60 * 24); // +1 day per tick
         if (next > END_DATE) {
-            setIsPlaying(false);
+          setIsPlaying(false);
         } else {
-            setCurrentDate(new Date(next).toISOString().split('T')[0]);
+          setCurrentDate(new Date(next).toISOString().split('T')[0]);
         }
       }, 50); // Fast ticks for smooth play
     }
@@ -54,29 +55,29 @@ const Timeline = () => {
     const currentX = x.get();
     const daysOffset = -currentX / PIXELS_PER_DAY;
     const newTime = START_DATE + (daysOffset * 1000 * 60 * 60 * 24);
-    
+
     // Clamp date
     const clampedTime = Math.max(START_DATE, Math.min(END_DATE, newTime));
     const newDate = new Date(clampedTime).toISOString().split('T')[0];
-    
+
     if (newDate !== currentDate) {
-        setCurrentDate(newDate);
+      setCurrentDate(newDate);
     }
   };
 
   // Generate ticks
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
 
   return (
     <div className="fixed bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-900 via-slate-900/90 to-transparent z-30 select-none overflow-hidden">
-      
+
       {/* Center Indicator (The "Needle") */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-full bg-red-500/50 z-40 pointer-events-none">
         <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-            {currentDate}
+          {currentDate}
         </div>
       </div>
 
@@ -100,53 +101,90 @@ const Timeline = () => {
         dragElastic={0.1}
         dragMomentum={true}
         onDragStart={() => {
-            setIsDragging(true);
-            setIsPlaying(false);
+          setIsDragging(true);
+          setIsPlaying(false);
         }}
         onDragEnd={() => setIsDragging(false)}
         onDrag={handleDrag}
       >
         {/* Render Months and Ticks */}
         {Array.from({ length: TOTAL_DAYS }).map((_, i) => {
-            const date = new Date(START_DATE + i * 86400000);
-            const isFirstOfMonth = date.getDate() === 1;
-            const isWeek = date.getDay() === 0; // Sunday
-            
-            return (
-                <div 
-                    key={i} 
-                    className="relative flex-shrink-0 flex flex-col justify-end items-center"
-                    style={{ width: PIXELS_PER_DAY }}
-                >
-                    {/* Tick Mark */}
-                    <div 
-                        className={`w-px ${isFirstOfMonth ? 'h-10 bg-slate-400' : isWeek ? 'h-6 bg-slate-600' : 'h-3 bg-slate-800'}`} 
-                    />
-                    
-                    {/* Month Label */}
-                    {isFirstOfMonth && (
-                        <div className="absolute bottom-12 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                            {months[date.getMonth()]}
-                        </div>
-                    )}
+          const date = new Date(START_DATE + i * 86400000);
+          const isFirstOfMonth = date.getDate() === 1;
+          const isWeek = date.getDay() === 0; // Sunday
 
-                    {/* Event Dots on the timeline track */}
-                    {events.filter(e => e.date === date.toISOString().split('T')[0]).map(e => (
-                        <div 
-                            key={e.id}
-                            className={`absolute bottom-14 w-3 h-3 rounded-full border border-slate-900 ${
-                                e.type === 'THREAT' ? 'bg-orange-500' :
-                                e.type === 'IMPOSITION' ? 'bg-red-500' :
-                                e.type === 'RELIEF' ? 'bg-green-500' : 'bg-blue-400'
-                            }`}
-                            title={e.headline}
-                        />
-                    ))}
+          return (
+            <div
+              key={i}
+              className="relative flex-shrink-0 flex flex-col justify-end items-center"
+              style={{ width: PIXELS_PER_DAY }}
+            >
+              {/* Tick Mark */}
+              <div
+                className={`w-px ${isFirstOfMonth ? 'h-10 bg-slate-400' : isWeek ? 'h-6 bg-slate-600' : 'h-3 bg-slate-800'}`}
+              />
+
+              {/* Month Label */}
+              {isFirstOfMonth && (
+                <div className="absolute bottom-12 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                  {months[date.getMonth()]}
                 </div>
-            );
+              )}
+
+              {/* Event Dots on the timeline track */}
+              {events.filter(e => e.date === date.toISOString().split('T')[0]).map((e, index) => {
+                const flagUrl = e.countryCode && e.countryCode !== 'GLOBAL'
+                  ? `https://flagcdn.com/w20/${e.countryCode.toLowerCase()}.png`
+                  : null;
+
+                return (
+                  <div
+                    key={e.id}
+                    className="absolute bottom-14 flex flex-col items-center group z-10"
+                    style={{
+                      bottom: `${3.5 + (index * 6)}rem`, // Stagger height if multiple events on same day
+                      zIndex: 10 + index
+                    }}
+                  >
+                    {/* Connector Line */}
+                    <div className={`w-px h-6 mb-1 ${e.type === 'THREAT' ? 'bg-orange-500' :
+                        e.type === 'IMPOSITION' ? 'bg-red-500' :
+                          e.type === 'RELIEF' ? 'bg-green-500' : 'bg-blue-400'
+                      }`} />
+
+                    {/* Event Card */}
+                    <div className={`
+                      flex flex-col items-start p-2 rounded-md shadow-lg backdrop-blur-md border min-w-[120px] max-w-[160px]
+                      transition-all duration-200 hover:scale-110 hover:z-50
+                      ${e.type === 'THREAT' ? 'bg-orange-950/80 border-orange-500/50' :
+                        e.type === 'IMPOSITION' ? 'bg-red-950/80 border-red-500/50' :
+                          e.type === 'RELIEF' ? 'bg-green-950/80 border-green-500/50' : 'bg-blue-950/80 border-blue-500/50'
+                      }
+                    `}>
+                      <div className="flex items-center gap-2 mb-1 w-full border-b border-white/10 pb-1">
+                        {flagUrl && <img src={flagUrl} alt={e.countryCode} className="w-4 h-auto rounded-[1px]" />}
+                        <span className="text-[10px] font-mono text-slate-300">{e.date}</span>
+                      </div>
+                      <div className="text-[10px] font-semibold text-white leading-tight line-clamp-2">
+                        {e.headline}
+                      </div>
+                    </div>
+
+                    {/* Dot on line */}
+                    <div
+                      className={`absolute -bottom-7 w-2 h-2 rounded-full ${e.type === 'THREAT' ? 'bg-orange-500' :
+                          e.type === 'IMPOSITION' ? 'bg-red-500' :
+                            e.type === 'RELIEF' ? 'bg-green-500' : 'bg-blue-400'
+                        }`}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          );
         })}
       </motion.div>
-      
+
       {/* Gradient Masks for fade out effect on sides */}
       <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-900 to-transparent pointer-events-none z-20" />
       <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-900 to-transparent pointer-events-none z-20" />

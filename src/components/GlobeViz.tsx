@@ -229,14 +229,49 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
         htmlAltitude={0.1}
         htmlElement={(d: any) => {
           const el = document.createElement('div');
-          el.className = 'pointer-events-none transform -translate-y-full -translate-x-1/2';
+          const isSelected = selectedCountry && selectedCountry.code === d.countryCode;
+
+          // Make it interactive if it has a valid country
+          const isInteractive = d.countryCode && d.countryCode !== 'GLOBAL';
+
+          el.className = `transform -translate-y-full -translate-x-1/2 ${isInteractive ? 'cursor-pointer pointer-events-auto' : 'pointer-events-none'}`;
+
+          const flagUrl = d.countryCode && d.countryCode !== 'GLOBAL'
+            ? `https://flagcdn.com/w40/${d.countryCode.toLowerCase()}.png`
+            : null;
+
+          const flagHtml = flagUrl
+            ? `<img src="${flagUrl}" alt="${d.countryCode}" class="w-5 h-auto mr-2 rounded-sm shadow-sm" />`
+            : '';
+
+          // Expanded content
+          const descriptionHtml = isSelected
+            ? `<div class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-200/50 font-normal">${d.description}</div>`
+            : '';
+
           el.innerHTML = `
-                <div class="bg-white/90 backdrop-blur-sm text-slate-900 px-3 py-2 rounded-lg shadow-xl border border-blue-500/30 flex flex-col items-center min-w-[150px] max-w-[200px]">
-                    <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-1">${d.date}</div>
+                <div class="bg-white/90 backdrop-blur-sm text-slate-900 px-3 py-2 rounded-lg shadow-xl border ${isSelected ? 'border-amber-500 ring-2 ring-amber-500/30' : 'border-blue-500/30'} flex flex-col items-center min-w-[150px] max-w-[200px] transition-all duration-300">
+                    <div class="flex items-center justify-center mb-1 w-full">
+                        ${flagHtml}
+                        <div class="text-xs font-bold uppercase tracking-wider text-blue-600">${d.date}</div>
+                    </div>
                     <div class="text-sm font-semibold text-center leading-tight">${d.headline}</div>
+                    ${descriptionHtml}
                     <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-white/90"></div>
                 </div>
             `;
+
+          if (isInteractive) {
+            el.addEventListener('click', (e) => {
+              e.stopPropagation(); // Prevent globe click
+              const country = countries.find(c => c.code === d.countryCode);
+              if (country) {
+                setSelectedCountry(country);
+                if (onCountryClick) onCountryClick(country);
+              }
+            });
+          }
+
           return el;
         }}
       />
