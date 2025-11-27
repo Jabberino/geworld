@@ -9,10 +9,16 @@ import InfoTabs from '../components/InfoTabs';
 import ReferencesModal from '../components/ReferencesModal';
 import ReferencesButton from '../components/ReferencesButton';
 import EventOverlay from '../components/EventOverlay';
+import MobileBlocker from '../components/MobileBlocker';
 
 export default function Home() {
   return (
-    <main className="relative w-full h-screen overflow-hidden bg-slate-900 text-slate-100">
+    <main className="relative min-h-screen bg-slate-950 overflow-hidden">
+      
+      {/* Mobile Blocker */}
+      <MobileBlocker />
+      
+      {/* Intro Modal */}
       <IntroModal />
 
       {/* Background Globe */}
