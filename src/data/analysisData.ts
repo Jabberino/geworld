@@ -1,0 +1,93 @@
+export const analysisData: Record<string, { policyResponse: string[], researchAnalysis: string }> = {
+  VN: {
+    policyResponse: [
+      "Reduced tariffs from 46% to 20% after immediate negotiations",
+      "Rapid diplomatic outreach + major US purchase commitments (including an F-16 fighter jet)",
+      "Accepted that tariff reductions apply only to Vietnam-made goods, not transshipped Chinese products",
+      "Strengthened origin-verification mechanisms to avoid tariff evasion"
+    ],
+    researchAnalysis: "In consideration with the fact that Vietnam is practically one of the most exposed economies in the world to the U.S. trade policy with heavy reliance on exports, which makes up a majority of the country’s GDP, and the U.S. serving as its largest market. The threat made against Vietnam of a 46% Ad Valorem tariff represents a severe economic shock as seen with the trade balance going down to $576,700,000 from the previous $1,634,500.00 last month. Severe unemployment in export reliant industries such as electronics, textiles, machinery, agriculture, and furniture would be hit hardest the most. Since it is a major part of their economy this shock will be felt throughout the country with higher inflation with people losing jobs. Their revised tariffs to 20% should remedy this unemployment and inflation shocks somewhat as seen by the improved trade balance to $3,717,100,000 in August. However, their tradeoffs for the lower tariffs in place of purchasing additional expensive American goods could be another driver for inflation. The stricter mechanism for transhipping where China heavily benefits from is also another signal that these tariffs have an underlying reason besides economic protection of American goods."
+  },
+  TH: {
+    policyResponse: [
+      "Initially 36% reduced to 19%",
+      "Committed to reduce its trade surplus with the US by 70% over five years",
+      "Imposed zero tariffs on 10,000+ US items (medical devices, auto components, etc.)",
+      "Agreed to major US purchases (LNG, Boeing aircraft)",
+      "Adopted strong origin verification to prevent Chinese transshipment (possible 40% penalty)"
+    ],
+    researchAnalysis: "Thailand’s economy actually relies a lot on selling goods abroad, thereby making it very sensitive towards the U.S. tariffs. Because of this, it is clear that Thailand’s GDP will be subjected to economic challenges due to its high dependence on exports with the U.S. serving as the main market for Thailand’s goods. In hindsight, the potential of growth for Thailand reduces drastically should Trump tariffs take effect. Though the negotiations leading to a substantial decrease in the tariffs prevented this catastrophe, Thailand still faces several issues and challenges such as managing the expected slowdown in the later years of the year 2025, as well as mitigating long-term cost of the 19% tariff and significant trade-offs made. Export reliant industries like automotive, electronic, agricultural, petrochemical, and machinery would be hit the most with the imposition of the initial 36% tariff as seen during the announcement in April trade balance for the country declined to -$3,792,284,000 from the previous $442,837,000 last month. Economic shocks in unemployment in these industries will be hit hard the most. It then leads to inflation. Fortunately, the country reduced tariffs down to 19% that would remedy these shocks as seen with a slightly better trade balance of -$2,362,206,000 in August. Despite this, the country is still in a worse position than before coupled with the tradeoffs in having lower tariffs for American goods reducing government revenue and increased purchase of American goods that may be another potential driver for inflation (Teng-Westergaard, 2025)."
+  },
+  ID: {
+    policyResponse: [
+      "19% tariff on its exports similar to the Philippines",
+      "Eliminated tariff barriers for over 99% of US products (preferential basis)",
+      "Committed to major purchases from the US: US$15B in energy, 50–57 Boeing jets, US$4.5B in agricultural goods",
+      "Avoided potential tariffs increase to 32%"
+    ],
+    researchAnalysis: "Indonesia is another country that benefits from international trade. Their main exports are in forms of raw materials like coal, palm oil, and gas which shows in their trade balance with $3,492,368,000 at the start of 2025. With such a high trade volume, the country benefits from the revenue in exports in these raw material industries. Since Trump announced his 32% tariffs, Indonesia also experienced a decline in its trade balance to $158,833,000 in August. Fortunately, Indonesia signed a deal with the US to bring it down to 19% but with lower tariffs and acquisition of US goods. This avoided a potential high unemployment and inflation since their raw material or commodity industry makes a majority of their exports (Teng-Westergaard, 2025)."
+  },
+  MY: {
+    policyResponse: [
+      "Tariffs reduced to 19 which was threatened to increase to 25%",
+      "US$240B total in purchases/investments",
+      "US$150B in American products over five years",
+      "US$3.4B in natural gas purchases",
+      "US$70B in US-bound investment (via Petronas)",
+      "Reduced or removed most tariffs and non-tariff barriers for US firms (cloud, digital services, licensing reforms)"
+    ],
+    researchAnalysis: "Malaysia is another export-driven economy with exports accounting for about 65% of their GDP. Given that one of their major exporting partners is the US, the announcement of tariffs of 25% on their exports in April brought their trade balance down to $1,161,898,000 from $5,584,885,000 in March. This substantial decline in trade would lead to high unemployment and inflation in the country. Export driven industries like electronics, agriculture, mining, and manufacturing would be hit the hardest. In response, Malaysia made a deal with Trump in August bringing it down to 19% bringing the trade balance up to $3,749,658.00. The lower tariffs are beneficial, but would still lead to higher unemployment and inflation in the country (Teng-Westergaard, 2025). Similarly, the lower tariffs were also achieved with tradeoffs that could increase inflation from the increased purchase of American goods compared to cheaper local ones."
+  },
+  PH: {
+    policyResponse: [
+      "Reduced to 19% from 20%",
+      "Agreed to near-zero tariffs on US imports, especially automobiles, machinery, and selected industrial goods",
+      "Strengthened economic cooperation and eased barriers for American companies entering the Philippine market"
+    ],
+    researchAnalysis: "The Philippines doesn’t rely on its exports for GDP. In fact its trade balance with the rest of the world is consistently at a deficit, meaning the country imports more than it exports. Nonetheless, it is still a source of revenue for the country and the announcements of the tariffs in April brought the trade deficit down to -$3,972,600,000. Industries that rely heavily on exports to the US like electronics, semiconductors, agricultural produce will be affected the most. The effect on the unemployment for those industries may be high and in effect inflation too. The reduced tariff to 19% in August should reduce this shock by improving exports which is shown when the trade balance improved from a -$4,422,940,000 to a -$3,986,200,000 (Teng-Westergaard, 2025). The tradeoffs for lower tariffs would also lead to higher inflation from increasing the purchase of American goods compared to cheaper local ones."
+  },
+  SG: {
+    policyResponse: [
+      "Imposed a high-level economic resilience task force to monitor changes in tariffs",
+      "Initially at 10% even with a bilateral free trade agreement and a trade deficit",
+      "Granted zero-tariff access for more US goods (pharma, aerospace)",
+      "Streamlined customs and import licensing for US firms",
+      "Made public-sector purchasing pledges for US technology, defense, and healthcare goods",
+      "Implemented stricter controls to prevent Chinese goods from being rerouted through Singapore"
+    ],
+    researchAnalysis: "Singapore is one of the few countries that have a very favorable impression with the US reflected with the low tariff rate of 10%. It is also nice to note that their GDP does not rely on exports but the financial sector so these tariffs would have a lower effect on unemployment and inflation compared to other countries. Nonetheless, exports are still a source of revenue and the tariffs affected the volume of exports of Singapore as seen when the tariffs were implemented officially in August the trade balance went down to $3,732,575.00 from the $5,546,484,000 previous month. However it is important to note that Singapore is one of the few countries that have a deficit with the US yet was still imposed with a tariff. It signals that these tariffs were imposed not for economic reasons but for another underlying reason mainly tied to geopolitical tensions surrounding ASEAN and China related to transhipping and influence (Teng-Westergaard, 2025)."
+  },
+  BN: {
+    policyResponse: [
+      "Initially assigned a 25% tariff",
+      "The Trump administration offered tariff reductions if Brunei shifted manufacturing to the US",
+      "Reciprocal tariffs would trigger equivalent levies",
+      "No policy response as of yet"
+    ],
+    researchAnalysis: "Brunei is the only country in Southeast Asia that faced this specific 25% tariff. Since the start of the year the country has been experiencing a steady decline in its trade balance from $574,467,000,000 to $194,866,000,00.00 by May 2025. The announcement of Trump’s tariffs exacerbated this decline with industries that relied on their exports to the US namely chemicals, mineral fuels, and machinery and transport equipment taking the hit the most. With lower trade volumes also comes lower income leading to unemployment in these industries and inflation to general goods (Teng-Westergaard, 2025). Their lack of a policy response and no change to the tariff rate compared to other countries reflects how vulnerable they are too."
+  },
+  KH: {
+    policyResponse: [
+      "Initially 36% and reduced to 19%",
+      "Agreed to zero tariffs on all American goods",
+      "Avoided potential tariff escalation up to 49% if compliance failed"
+    ],
+    researchAnalysis: "When the tariffs were announced in April, the country’s already deep trade deficit from -$137,867,000 declined to -$507,705,000 in April. Given Cambodia is an export-driven economy in industries such as manufacturing in garments and footwear, these tariffs would affect jobs across the country creating unemployment and leading to inflation. Uniquely, Cambodia’s new tariffs in July were achieved by Trump encouraging a ceasefire with Thailand, however they still remain at a high 19%. This effect is evident when their trade balance increased to $301,744,000 in August. However, this was not achieved without tradeoffs. One of the concessions was to give zero tariffs on American goods, which reduces the revenue from the government from these tariffs (Teng-Westergaard, 2025; Cheng et al, 2025)."
+  },
+  LA: {
+    policyResponse: [
+      "Initially at 48% but still high at 40%",
+      "Limited leverage; reduction tied to political concessions linked to China-dependent infrastructure and waterways",
+      "No direct commercial tradeoff, but accepted US monitoring of trade flows to curb Chinese transshipment"
+    ],
+    researchAnalysis: "Laos is in a unique position as the only land locked country where they rely on the Mekong River for daily life, culture, and economics. The base of the river however is controlled by China and that makes Laos dependent on them and giving them favorable agreements to maintain their lifeblood of the Mekong river. As a consequence, their relationship and trade with the US is not favorable and no available data could be retrieved regarding their trade with the US. Nonetheless, the US still imposed one of its highest tariffs for Laos at 48% which should slightly affect some industries getting cut off on their revenue from exports to the US. Laos did try to negotiate with the US but only brought it back down to 40%. Given that they still heavily rely on China, these tariffs have a low effect in Laos compared to other countries but it would still affect industries that use highly specialized equipment. It also signals that the US is trying to single out these countries that don’t conform to their ways, shifting these tariffs as more political tools than economic tools (Teng-Westergaard, 2025)."
+  },
+  MM: {
+    policyResponse: [
+      "40% tariff remained high",
+      "Offered to slash tariffs on American goods from 88% → 0% to avoid further penalties",
+      "Committed to deeper US market access despite no domestic reduction"
+    ],
+    researchAnalysis: "Myanmar is another country with a unique situation with the US. Given their civil war and political instability, the country is not in a capacity to frequently trade with the US. Furthermore, their economy is more geographically dependent with main trade partners with China, Thailand, and Singapore. Despite this, the US still imposed a high 40% tariff rate on Myanmar. Similar to Laos, the tariffs would not cause high unemployment and inflation since industries don’t rely on their exports to the US. Myanmar also tried to negotiate with the US but still remains at a high 40%. Furthermore, the tariffs used here are also similarly used as a political tool for singling out countries not conforming to the US way (Steinberg, 2025)"
+  }
+};

@@ -1,4 +1,4 @@
-export type EventType = 'THREAT' | 'IMPOSITION' | 'RELIEF' | 'COMMENTARY';
+export type EventType = 'THREAT' | 'IMPOSITION' | 'RELIEF' | 'COMMENTARY' | 'AGREEMENT';
 
 export interface TimelineEvent {
   id: string;
@@ -12,9 +12,10 @@ export interface TimelineEvent {
 
 export interface CountryMetric {
   date: string; // YYYY-MM
-  spotRate: number; // e.g., 25,000 VND/USD
-  spotRateDelta: number; // % change from previous month
-  exportShare: number; // % of Global Trade
+  spotRate: number | null; // e.g., 25,000 VND/USD
+  spotRateDelta?: number; // % change from previous month
+  exportShare?: number; // % of Global Trade
+  tradeBalance?: number | null; // Trade Balance (Exports - Imports)
 }
 
 export interface CountryData {
@@ -24,9 +25,11 @@ export interface CountryData {
   leader: string;
   metrics: CountryMetric[];
   events: TimelineEvent[];
-  trumpSensitivityScore: number;
   topExport: string;
-  usTradeDeficit: number; // Percentage
   lat: number;
   lng: number;
+  analysis?: {
+    policyResponse: string[];
+    researchAnalysis: string;
+  };
 }

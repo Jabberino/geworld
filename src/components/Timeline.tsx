@@ -99,7 +99,7 @@ const Timeline = () => {
         drag="x"
         dragConstraints={{ left: -TOTAL_WIDTH, right: 0 }}
         dragElastic={0.1}
-        dragMomentum={true}
+        dragMomentum={false}
         onDragStart={() => {
           setIsDragging(true);
           setIsPlaying(false);
@@ -138,14 +138,22 @@ const Timeline = () => {
                   : null;
 
                 return (
-                  <div
-                    key={e.id}
-                    className="absolute bottom-14 flex flex-col items-center group z-10"
-                    style={{
-                      bottom: `${3.5 + (index * 6)}rem`, // Stagger height if multiple events on same day
-                      zIndex: 10 + index
-                    }}
-                  >
+                    <div
+                      key={e.id}
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setCurrentDate(e.date);
+                        if (e.countryCode && e.countryCode !== 'GLOBAL') {
+                          const country = useStore.getState().countries.find(c => c.code === e.countryCode);
+                          if (country) useStore.getState().setSelectedCountry(country);
+                        }
+                      }}
+                      className="absolute bottom-14 flex flex-col items-center group transition-all duration-200 hover:!z-[100] cursor-pointer"
+                      style={{
+                        bottom: `${3.5 + (index * 6)}rem`, // Stagger height if multiple events on same day
+                        zIndex: 10 + index
+                      }}
+                    >
                     {/* Connector Line */}
                     <div className={`w-px h-6 mb-1 ${e.type === 'THREAT' ? 'bg-orange-500' :
                         e.type === 'IMPOSITION' ? 'bg-red-500' :
@@ -155,7 +163,7 @@ const Timeline = () => {
                     {/* Event Card */}
                     <div className={`
                       flex flex-col items-start p-2 rounded-md shadow-lg backdrop-blur-md border min-w-[120px] max-w-[160px]
-                      transition-all duration-200 hover:scale-110 hover:z-50
+                      transition-all duration-200 hover:scale-110 hover:z-[100]
                       ${e.type === 'THREAT' ? 'bg-orange-950/80 border-orange-500/50' :
                         e.type === 'IMPOSITION' ? 'bg-red-950/80 border-red-500/50' :
                           e.type === 'RELIEF' ? 'bg-green-950/80 border-green-500/50' : 'bg-blue-950/80 border-blue-500/50'

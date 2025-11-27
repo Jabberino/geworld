@@ -18,21 +18,40 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
 
   const activeEvents = useMemo(() => {
     const current = new Date(currentDate).getTime();
-    const window = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+    const window = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-    return events.filter(e => {
+    const filteredEvents = events.filter(e => {
       const eventDate = new Date(e.date).getTime();
       return Math.abs(current - eventDate) < window;
-    }).map(e => {
-      const country = countries.find(c => c.code === e.countryCode);
-      return {
-        ...e,
-        lat: country ? country.lat : 0,
-        lng: country ? country.lng : 0,
-        // If no country found (e.g. GLOBAL), maybe put it somewhere specific or filter it out?
-        // For now, let's keep it at 0,0 if not found, or maybe filter out if lat/lng is missing.
-      };
-    }).filter(e => e.lat !== 0 || e.lng !== 0); // Filter out events without location (like GLOBAL if not mapped)
+    });
+
+    // Aggressive offsets for Leader Lines (Exploded View)
+    // REMOVED: User requested bubbles to be on the country itself.
+
+    // Group by country
+    const clusters: { [key: string]: any } = {};
+
+    filteredEvents.forEach(e => {
+      if (!clusters[e.countryCode]) {
+        const country = countries.find(c => c.code === e.countryCode);
+        if (country) {
+          // No offset, place directly on country
+          clusters[e.countryCode] = {
+            countryCode: e.countryCode,
+            originLat: country.lat,
+            originLng: country.lng,
+            labelLat: country.lat, // Same as origin
+            labelLng: country.lng, // Same as origin
+            events: []
+          };
+        }
+      }
+      if (clusters[e.countryCode]) {
+        clusters[e.countryCode].events.push(e);
+      }
+    });
+
+    return Object.values(clusters);
   }, [currentDate, events, countries]);
 
   useEffect(() => {
@@ -129,9 +148,9 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
     const country = countries.find((c) => c.code === countryCode);
 
     if (country) {
-      // Simple color logic based on sensitivity for now
-      // High sensitivity = Red, Low = Blue
-      return country.trumpSensitivityScore > 7 ? '#ef4444' : '#3b82f6';
+      // Uniform Blue for all ASEAN members to avoid confusion
+      // We can add a subtle opacity or brightness difference later if needed
+      return '#3b82f6'; 
     }
     return '#1e293b'; // Default dark slate for ASEAN members without data (shouldn't happen with full mock)
   };
@@ -191,7 +210,7 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
           }
 
           if (country) {
-            return country.trumpSensitivityScore > 7 ? '#ef4444' : '#3b82f6';
+            return '#3b82f6';
           }
           return '#1e293b';
         }}
@@ -216,7 +235,7 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
         labelText={(d: any) => d.name}
         labelSize={(d: any) => d === selectedCountry ? 2.0 : 1.0} // Smaller default, larger selected
         labelDotRadius={0} // Remove dot completely
-        labelColor={(d: any) => d === selectedCountry ? '#f59e0b' : 'rgba(255,255,255,0.75)'} // Amber text when selected
+        labelColor={(d: any) => d === selectedCountry ? '#ffffff' : 'rgba(255,255,255,0.75)'} // White text when selected for contrast
         labelResolution={2}
         labelAltitude={0.01}
         atmosphereColor="#3b82f6"
@@ -224,42 +243,76 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
 
         // HTML Elements (Event Popups)
         htmlElementsData={activeEvents}
-        htmlLat={(d: any) => d.lat}
-        htmlLng={(d: any) => d.lng}
-        htmlAltitude={0.1}
+        htmlLat={(d: any) => d.labelLat}
+        htmlLng={(d: any) => d.labelLng}
+        htmlAltitude={0.02} // Surface level to anchor accurately
         htmlElement={(d: any) => {
           const el = document.createElement('div');
           const isSelected = selectedCountry && selectedCountry.code === d.countryCode;
+          const activeCount = d.events.length;
+          const events = d.events; // Only active events
 
           // Make it interactive if it has a valid country
           const isInteractive = d.countryCode && d.countryCode !== 'GLOBAL';
 
-          el.className = `transform -translate-y-full -translate-x-1/2 ${isInteractive ? 'cursor-pointer pointer-events-auto' : 'pointer-events-none'}`;
+          // Base positioning classes
+          el.className = `transform -translate-y-1/2 -translate-x-1/2 ${isInteractive ? 'cursor-pointer pointer-events-auto' : 'pointer-events-none'}`;
 
           const flagUrl = d.countryCode && d.countryCode !== 'GLOBAL'
             ? `https://flagcdn.com/w40/${d.countryCode.toLowerCase()}.png`
             : null;
 
-          const flagHtml = flagUrl
-            ? `<img src="${flagUrl}" alt="${d.countryCode}" class="w-5 h-auto mr-2 rounded-sm shadow-sm" />`
-            : '';
+          if (isSelected) {
+            // EXPANDED STATE (Simple Card for Active Events)
+            // Just show the top active event + count if more
+            const primaryEvent = events[0];
+            
+            const descriptionHtml = `<div class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-200/50 font-normal">${primaryEvent.description}</div>`;
+            
+            const stackBadge = activeCount > 1 
+              ? `<div class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-md animate-pulse">+${activeCount - 1}</div>`
+              : '';
 
-          // Expanded content
-          const descriptionHtml = isSelected
-            ? `<div class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-200/50 font-normal">${d.description}</div>`
-            : '';
-
-          el.innerHTML = `
-                <div class="bg-white/90 backdrop-blur-sm text-slate-900 px-3 py-2 rounded-lg shadow-xl border ${isSelected ? 'border-amber-500 ring-2 ring-amber-500/30' : 'border-blue-500/30'} flex flex-col items-center min-w-[150px] max-w-[200px] transition-all duration-300">
-                    <div class="flex items-center justify-center mb-1 w-full">
-                        ${flagHtml}
-                        <div class="text-xs font-bold uppercase tracking-wider text-blue-600">${d.date}</div>
+            el.innerHTML = `
+                  <div class="relative bg-white/95 backdrop-blur-md text-slate-900 px-4 py-3 rounded-xl shadow-2xl border border-amber-500 ring-4 ring-amber-500/20 flex flex-col items-start min-w-[200px] max-w-[240px] animate-in fade-in zoom-in duration-200 origin-bottom">
+                      ${stackBadge}
+                      <div class="flex items-center justify-between w-full mb-1.5">
+                          <div class="flex items-center">
+                            ${flagUrl ? `<img src="${flagUrl}" alt="${d.countryCode}" class="w-4 h-auto mr-1.5 rounded-sm shadow-sm opacity-80" />` : ''}
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">${d.countryCode}</span>
+                          </div>
+                          <div class="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">${primaryEvent.date}</div>
+                      </div>
+                      <div class="text-sm font-bold leading-tight text-slate-800 mb-0.5">${primaryEvent.headline}</div>
+                      ${descriptionHtml}
+                      
+                      <!-- Pointer Arrow -->
+                      <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 rotate-45 w-4 h-4 bg-white border-r border-b border-amber-500"></div>
+                  </div>
+              `;
+              // Adjust z-index for selected
+              el.style.zIndex = "1000";
+          } else {
+            // COLLAPSED STATE (Bubble)
+            const countBadge = activeCount > 1
+                ? `<span class="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[8px] text-white font-bold ring-1 ring-white">${activeCount}</span>`
+                : '';
+            
+            el.innerHTML = `
+                <div class="group relative flex items-center justify-center transition-transform duration-200 hover:scale-110">
+                    <div class="relative flex items-center justify-center h-8 w-8 rounded-full bg-white/90 backdrop-blur shadow-lg border-2 border-blue-500 hover:border-amber-400 transition-colors">
+                        ${flagUrl ? `<img src="${flagUrl}" class="h-4 w-auto rounded-[1px] opacity-90 grayscale group-hover:grayscale-0 transition-all" />` : '<div class="h-2 w-2 rounded-full bg-blue-500"></div>'}
                     </div>
-                    <div class="text-sm font-semibold text-center leading-tight">${d.headline}</div>
-                    ${descriptionHtml}
-                    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-white/90"></div>
+                    ${countBadge}
+                    <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                        <div class="bg-slate-900/90 text-white text-[10px] px-2 py-1 rounded shadow-lg backdrop-blur-sm mt-1">
+                            ${d.events[0].headline}
+                        </div>
+                    </div>
                 </div>
             `;
+            el.style.zIndex = "10";
+          }
 
           if (isInteractive) {
             el.addEventListener('click', (e) => {
