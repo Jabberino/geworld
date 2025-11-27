@@ -127,7 +127,7 @@ const Timeline = () => {
       </div>
 
       {/* Controls */}
-      <div className="absolute top-4 right-8 z-50">
+      <div className="absolute top-4 right-8 z-[200]">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className="p-3 rounded-full bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 backdrop-blur-md transition-all"

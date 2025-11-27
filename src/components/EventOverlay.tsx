@@ -14,10 +14,16 @@ const EventOverlay = () => {
     setCurrentEvent
   } = useStore();
 
-  const handleResume = () => {
+  const handleSkipWait = () => {
     setIsAutoPlayPaused(false);
     setCurrentEvent(null);
     setIsPlaying(true);
+  };
+
+  const handleStop = () => {
+    setIsAutoPlayPaused(false);
+    setCurrentEvent(null);
+    setIsPlaying(false); // Stop autoplay
   };
 
   return (
@@ -30,7 +36,7 @@ const EventOverlay = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm pointer-events-auto"
-            onClick={handleResume}
+            onClick={handleStop}
           />
 
           {/* Event Card */}
@@ -67,7 +73,7 @@ const EventOverlay = () => {
                 </div>
               </div>
               <button
-                onClick={handleResume}
+                onClick={handleStop}
                 className="p-2 hover:bg-white/10 rounded-full text-slate-400 hover:text-white transition-colors"
               >
                 <X size={24} />
@@ -85,7 +91,7 @@ const EventOverlay = () => {
                 <div className="flex justify-between text-sm text-slate-400">
                   <span>Resuming in {Math.ceil((100 - autoPlayTimer) / 100 * 15)}s...</span>
                   <button 
-                    onClick={handleResume}
+                    onClick={handleSkipWait}
                     className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
                   >
                     <SkipForward size={14} />
