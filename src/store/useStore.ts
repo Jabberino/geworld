@@ -5,6 +5,11 @@ import { mockCountries, mockEvents } from '../data/mockData';
 interface AppState {
   selectedCountry: CountryData | null;
   currentDate: string; // ISO Date YYYY-MM-DD
+  isAutoPlayPaused: boolean;
+  autoPlayTimer: number; // 0 to 100 or seconds
+  currentEvent: TimelineEvent | null;
+  
+  // Restore missing properties
   isPlaying: boolean;
   events: TimelineEvent[];
   countries: CountryData[];
@@ -13,6 +18,9 @@ interface AppState {
   setSelectedCountry: (country: CountryData | null) => void;
   setCurrentDate: (date: string) => void;
   setIsPlaying: (isPlaying: boolean) => void;
+  setIsAutoPlayPaused: (paused: boolean) => void;
+  setAutoPlayTimer: (timer: number) => void;
+  setCurrentEvent: (event: TimelineEvent | null) => void;
   playNextWeek: () => void;
   setCountries: (countries: CountryData[]) => void;
   setShowIntro: (show: boolean) => void;
@@ -24,6 +32,9 @@ export const useStore = create<AppState>((set) => ({
   selectedCountry: null,
   currentDate: '2025-01-01',
   isPlaying: false,
+  isAutoPlayPaused: false,
+  autoPlayTimer: 0,
+  currentEvent: null,
   events: mockEvents,
   countries: mockCountries,
   showIntro: true,
@@ -32,6 +43,9 @@ export const useStore = create<AppState>((set) => ({
   setSelectedCountry: (country) => set({ selectedCountry: country }),
   setCurrentDate: (date) => set({ currentDate: date }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
+  setIsAutoPlayPaused: (paused) => set({ isAutoPlayPaused: paused }),
+  setAutoPlayTimer: (timer) => set({ autoPlayTimer: timer }),
+  setCurrentEvent: (event) => set({ currentEvent: event }),
   setCountries: (countries) => set({ countries }),
   setShowIntro: (show) => set({ showIntro: show }),
   setShowReferences: (show) => set({ showReferences: show }),

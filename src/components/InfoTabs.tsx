@@ -105,6 +105,7 @@ const InfoTabs = () => {
                 </div>
             ),
         },
+
     ];
 
     return (

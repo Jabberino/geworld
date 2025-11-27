@@ -233,10 +233,10 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
         labelLat={(d: any) => d.lat}
         labelLng={(d: any) => d.lng}
         labelText={(d: any) => d.name}
-        labelSize={(d: any) => d === selectedCountry ? 2.0 : 1.0} // Smaller default, larger selected
-        labelDotRadius={0} // Remove dot completely
-        labelColor={(d: any) => d === selectedCountry ? '#ffffff' : 'rgba(255,255,255,0.75)'} // White text when selected for contrast
-        labelResolution={2}
+        labelSize={(d: any) => d === selectedCountry ? 1.2 : 0.8} // Reduced size
+        labelDotRadius={0}
+        labelColor={(d: any) => d === selectedCountry ? '#f59e0b' : 'rgba(255,255,255,0.75)'} // Amber for selected
+        labelResolution={3} // Higher resolution for sharper text
         labelAltitude={0.01}
         atmosphereColor="#3b82f6"
         atmosphereAltitude={0.15}

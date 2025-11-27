@@ -4,30 +4,10 @@ import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen } from 'lucide-react';
 
+import { references } from '../data/references';
+
 const ReferencesModal = () => {
     const { showReferences, setShowReferences } = useStore();
-
-    // Placeholder APA references
-    const references = [
-        "Bertin, D., & Ferguson, N. (2025). The Return of Mercantilism: Trump's Trade Policy and Its Global Impact. Journal of International Economics, 45(2), 112-135.",
-        "Federal Reserve Bank of Boston. (2025). The Inflationary Effects of Tariff Hikes on Consumer Goods. Economic Policy Review, 12(4), 56-78.",
-        "World Bank. (2024). Global Economic Prospects: Southeast Asia in Focus. Washington, DC: World Bank Group.",
-        "International Monetary Fund. (2024). World Economic Outlook: Navigating Geopolitical Fragmentation. Washington, DC: IMF.",
-        "Smith, A. (1776). The Wealth of Nations. London: W. Strahan and T. Cadell.",
-        "Jones, R., & Lee, S. (2025). Supply Chain Resilience in the Face of Trade Wars. Harvard Business Review, 103(1), 45-52.",
-        "Bertin, D., & Ferguson, N. (2025). The Return of Mercantilism: Trump's Trade Policy and Its Global Impact. Journal of International Economics, 45(2), 112-135.",
-        "Federal Reserve Bank of Boston. (2025). The Inflationary Effects of Tariff Hikes on Consumer Goods. Economic Policy Review, 12(4), 56-78.",
-        "World Bank. (2024). Global Economic Prospects: Southeast Asia in Focus. Washington, DC: World Bank Group.",
-        "International Monetary Fund. (2024). World Economic Outlook: Navigating Geopolitical Fragmentation. Washington, DC: IMF.",
-        "Smith, A. (1776). The Wealth of Nations. London: W. Strahan and T. Cadell.",
-        "Jones, R., & Lee, S. (2025). Supply Chain Resilience in the Face of Trade Wars. Harvard Business Review, 103(1), 45-52.",
-        "Bertin, D., & Ferguson, N. (2025). The Return of Mercantilism: Trump's Trade Policy and Its Global Impact. Journal of International Economics, 45(2), 112-135.",
-        "Federal Reserve Bank of Boston. (2025). The Inflationary Effects of Tariff Hikes on Consumer Goods. Economic Policy Review, 12(4), 56-78.",
-        "World Bank. (2024). Global Economic Prospects: Southeast Asia in Focus. Washington, DC: World Bank Group.",
-        "International Monetary Fund. (2024). World Economic Outlook: Navigating Geopolitical Fragmentation. Washington, DC: IMF.",
-        "Smith, A. (1776). The Wealth of Nations. London: W. Strahan and T. Cadell.",
-        "Jones, R., & Lee, S. (2025). Supply Chain Resilience in the Face of Trade Wars. Harvard Business Review, 103(1), 45-52."
-    ];
 
     return (
         <AnimatePresence>

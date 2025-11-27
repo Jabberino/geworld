@@ -8,6 +8,7 @@ import HelpButton from '../components/HelpButton';
 import InfoTabs from '../components/InfoTabs';
 import ReferencesModal from '../components/ReferencesModal';
 import ReferencesButton from '../components/ReferencesButton';
+import EventOverlay from '../components/EventOverlay';
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-full p-6 bg-gradient-to-b from-slate-900 to-transparent pointer-events-auto flex justify-between items-start">
           <div>
             <h1 className="text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-              GEWORLD: WAR ROOM
+              TRADEPULSE
             </h1>
             <p className="text-slate-400 mt-1">Global Economic Watch & Real-time Data</p>
           </div>
@@ -37,6 +38,9 @@ export default function Home() {
 
         {/* References Modal */}
         <ReferencesModal />
+
+        {/* Event Overlay (Autoplay) */}
+        <EventOverlay />
 
         {/* Left Side Info Tabs */}
         <InfoTabs />

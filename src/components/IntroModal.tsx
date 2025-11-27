@@ -2,7 +2,7 @@
 
 import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Info, Globe, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Info, Globe, TrendingUp, AlertTriangle, Wrench } from 'lucide-react';
 
 const IntroModal = () => {
     const { showIntro, setShowIntro } = useStore();
@@ -29,7 +29,7 @@ const IntroModal = () => {
                     >
                         {/* Header */}
                         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-center">
-                            <h1 className="text-3xl font-bold text-white mb-2">Welcome to GEWORLD</h1>
+                            <h1 className="text-3xl font-bold text-white mb-2">Welcome to TradePulse</h1>
                             <p className="text-blue-100">Trump Trade Impact Visualizer (2025)</p>
                         </div>
 
@@ -62,6 +62,31 @@ const IntroModal = () => {
                                 <p className="text-sm">
                                     <span className="text-blue-400 font-semibold">Tip:</span> Click on countries to view detailed analytics. Use the timeline at the bottom to travel through 2025.
                                 </p>
+                            </div>
+
+                            {/* Credits */}
+                            <div className="pt-4 border-t border-slate-800">
+                                <h4 className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Project Team</h4>
+                                <div className="grid grid-cols-2 gap-2 text-sm">
+                                    {[
+                                        { name: "Angelo Quiñones", role: "member" },
+                                        { name: "Danilo Miguel Flandez", role: "member" },
+                                        { name: "Enzo Sitoy", role: "dev" },
+                                        { name: "Jabin Guamos", role: "dev" },
+                                        { name: "Julius Reyes", role: "member" },
+                                        { name: "Kaneesha Ysabel Rosales", role: "member" }
+                                    ].map((person, i) => (
+                                        <div key={i} className="flex items-center gap-2 text-slate-300">
+                                            {person.role === 'dev' ? (
+                                                <Wrench className="w-3 h-3 text-blue-400" />
+                                            ) : (
+                                                <div className="w-1.5 h-1.5 rounded-full bg-slate-600" />
+                                            )}
+                                            <span>{person.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="text-xs text-slate-500 mt-3">Developed for GEWORLD (AY 2025-2026, Term 1)</p>
                             </div>
                         </div>
 

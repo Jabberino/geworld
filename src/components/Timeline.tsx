@@ -12,7 +12,17 @@ const TOTAL_DAYS = 365;
 const TOTAL_WIDTH = TOTAL_DAYS * PIXELS_PER_DAY;
 
 const Timeline = () => {
-  const { currentDate, setCurrentDate, events, isPlaying, setIsPlaying } = useStore();
+  const { 
+    currentDate, 
+    setCurrentDate, 
+    events, 
+    isPlaying, 
+    setIsPlaying,
+    isAutoPlayPaused,
+    setIsAutoPlayPaused,
+    setAutoPlayTimer,
+    setCurrentEvent
+  } = useStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -37,19 +47,54 @@ const Timeline = () => {
   // Auto-play loop
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isPlaying) {
+    
+    if (isPlaying && !isAutoPlayPaused) {
       interval = setInterval(() => {
         const current = new Date(currentDate).getTime();
         const next = current + (1000 * 60 * 60 * 24); // +1 day per tick
-        if (next > END_DATE) {
+        const nextDateStr = new Date(next).toISOString().split('T')[0];
+
+        // Check for event on this new date
+        const eventOnDate = events.find(e => e.date === nextDateStr);
+
+        if (eventOnDate) {
+          // Pause and show event
+          setIsPlaying(false);
+          setIsAutoPlayPaused(true);
+          setCurrentEvent(eventOnDate);
+          setAutoPlayTimer(0);
+          setCurrentDate(nextDateStr);
+          
+          // Select country if applicable
+          if (eventOnDate.countryCode && eventOnDate.countryCode !== 'GLOBAL') {
+            const country = useStore.getState().countries.find(c => c.code === eventOnDate.countryCode);
+            if (country) useStore.getState().setSelectedCountry(country);
+          }
+        } else if (next > END_DATE) {
           setIsPlaying(false);
         } else {
-          setCurrentDate(new Date(next).toISOString().split('T')[0]);
+          setCurrentDate(nextDateStr);
         }
       }, 50); // Fast ticks for smooth play
+    } else if (isAutoPlayPaused) {
+      // Countdown timer logic
+      interval = setInterval(() => {
+        const currentTimer = useStore.getState().autoPlayTimer;
+        if (currentTimer >= 100) {
+          // Resume
+          setIsAutoPlayPaused(false);
+          setCurrentEvent(null);
+          setIsPlaying(true);
+        } else {
+          // Increment timer (100% over 15 seconds = ~6.6% per second)
+          // 50ms tick -> 300 ticks in 15s -> 0.33% per tick
+          setAutoPlayTimer(currentTimer + 0.33);
+        }
+      }, 50);
     }
+
     return () => clearInterval(interval);
-  }, [isPlaying, currentDate, setCurrentDate, setIsPlaying]);
+  }, [isPlaying, isAutoPlayPaused, currentDate, events, setCurrentDate, setIsPlaying, setIsAutoPlayPaused, setAutoPlayTimer, setCurrentEvent]);
 
   const handleDrag = (_: any, info: PanInfo) => {
     const currentX = x.get();
