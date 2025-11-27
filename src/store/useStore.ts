@@ -16,6 +16,8 @@ interface AppState {
   playNextWeek: () => void;
   setCountries: (countries: CountryData[]) => void;
   setShowIntro: (show: boolean) => void;
+  showReferences: boolean;
+  setShowReferences: (show: boolean) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -25,12 +27,14 @@ export const useStore = create<AppState>((set) => ({
   events: mockEvents,
   countries: mockCountries,
   showIntro: true,
+  showReferences: false,
 
   setSelectedCountry: (country) => set({ selectedCountry: country }),
   setCurrentDate: (date) => set({ currentDate: date }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   setCountries: (countries) => set({ countries }),
   setShowIntro: (show) => set({ showIntro: show }),
+  setShowReferences: (show) => set({ showReferences: show }),
   playNextWeek: () =>
     set((state) => {
       const date = new Date(state.currentDate);

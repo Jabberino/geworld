@@ -251,7 +251,7 @@ export const mockCountries: CountryData[] = [
     trumpSensitivityScore: 6.8,
     topExport: 'Semiconductors',
     usTradeDeficit: 6,
-    lat: 4.2105,
+    lat: 7.2105,
     lng: 101.9758,
   },
   {
