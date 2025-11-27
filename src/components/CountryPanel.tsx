@@ -56,11 +56,20 @@ const CountryPanel = () => {
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 20 }}
-        className="fixed top-0 right-0 w-[400px] h-full bg-slate-900/60 backdrop-blur-xl border-l border-white/10 p-6 overflow-y-auto text-slate-100 shadow-2xl"
+        className="fixed top-0 right-0 w-[400px] h-full bg-slate-900/60 backdrop-blur-xl border-l border-white/10 text-slate-100 shadow-2xl"
         style={{ zIndex: 2000 }}
       >
-        <div className="flex justify-between items-start mb-6">
-          <div>
+        {/* Fixed Close Button */}
+        <button
+          onClick={() => setSelectedCountry(null)}
+          className="absolute top-4 right-4 p-2 hover:bg-slate-800 rounded-full transition-colors z-10 bg-slate-900/80 backdrop-blur"
+        >
+          <X size={24} />
+        </button>
+
+        {/* Scrollable Content */}
+        <div className="h-full overflow-y-auto p-6">
+          <div className="mb-6 pr-12">
             <div className="text-5xl mb-4 drop-shadow-lg">{selectedCountry.flag}</div>
             <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
               {selectedCountry.name}
@@ -69,13 +78,6 @@ const CountryPanel = () => {
               {selectedCountry.leader}
             </p>
           </div>
-          <button
-            onClick={() => setSelectedCountry(null)}
-            className="p-2 hover:bg-slate-800 rounded-full transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
 
         <div className="space-y-6">
           {/* Key Stats Removed - Replaced by Analysis below */}
@@ -285,6 +287,7 @@ const CountryPanel = () => {
             </div>
           )}
 
+        </div>
         </div>
       </motion.div>
     </AnimatePresence>

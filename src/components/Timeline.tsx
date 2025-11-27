@@ -27,7 +27,7 @@ const Timeline = () => {
   const x = useMotionValue(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Sync x with global currentDate
+  // Sync x with global currentDate only during playback
   useEffect(() => {
     if (isDragging) return;
 
@@ -35,13 +35,11 @@ const Timeline = () => {
     const daysSinceStart = (current - START_DATE) / (1000 * 60 * 60 * 24);
     const targetX = -daysSinceStart * PIXELS_PER_DAY;
 
-    // Animate to position if playing, otherwise jump
+    // Only animate to position during playback, not manual scrolling
     if (isPlaying) {
       animate(x, targetX, { duration: 1, ease: "linear" });
-    } else {
-      // Smooth scroll on click/manual change
-      animate(x, targetX, { duration: 1, ease: "easeInOut" });
     }
+    // Don't animate on manual changes - let user control position freely
   }, [currentDate, isDragging, isPlaying, x]);
 
   // Auto-play loop
