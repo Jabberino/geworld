@@ -189,7 +189,7 @@ const CountryPanel = () => {
                       labelStyle={{ color: '#94a3b8' }}
                       formatter={(value: number) => [value.toLocaleString(), 'Rate']}
                     />
-                    <ReferenceLine x={currentDate.substring(0, 7)} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: 'NOW', fill: '#f59e0b', fontSize: 10, position: 'insideTopRight' }} />
+                    <ReferenceLine x={currentDate.substring(0, 7)} stroke="#f59e0b" strokeWidth={3} label={{ value: 'NOW', fill: '#f59e0b', fontSize: 10, position: 'insideTopRight', fontWeight: 'bold' }} />
                     <Line
                       type="monotone"
                       dataKey="spotRate"
@@ -229,7 +229,7 @@ const CountryPanel = () => {
                       labelStyle={{ color: '#94a3b8' }}
                       formatter={(value: number) => [`$${value}B`, 'Balance']}
                     />
-                    <ReferenceLine x={currentDate.substring(0, 7)} stroke="#f59e0b" strokeDasharray="3 3" />
+                    <ReferenceLine x={currentDate.substring(0, 7)} stroke="#f59e0b" strokeWidth={3} label={{ value: 'NOW', fill: '#f59e0b', fontSize: 10, position: 'top', fontWeight: 'bold' }} />
                     <Bar 
                       dataKey="tradeBalance" 
                       fill="#10b981"
