@@ -681,7 +681,7 @@ export const mockCountries: CountryData[] = [
     metrics: getRealMetrics('Malaysia'),
     events: mockEvents.filter((e) => e.countryCode === 'MY'),
     topExport: 'Semiconductors',
-    lat: 4.2105,
+    lat: 7.2105,
     lng: 101.9758,
     analysis: analysisData['MY'],
   },

@@ -5,6 +5,9 @@ import Timeline from '../components/Timeline';
 import CountryPanel from '../components/CountryPanel';
 import IntroModal from '../components/IntroModal';
 import HelpButton from '../components/HelpButton';
+import InfoTabs from '../components/InfoTabs';
+import ReferencesModal from '../components/ReferencesModal';
+import ReferencesButton from '../components/ReferencesButton';
 
 export default function Home() {
   return (
@@ -26,8 +29,17 @@ export default function Home() {
             </h1>
             <p className="text-slate-400 mt-1">Global Economic Watch & Real-time Data</p>
           </div>
-          <HelpButton />
+          <div className="flex items-center gap-3">
+            <ReferencesButton />
+            <HelpButton />
+          </div>
         </div>
+
+        {/* References Modal */}
+        <ReferencesModal />
+
+        {/* Left Side Info Tabs */}
+        <InfoTabs />
 
         {/* Side Panel */}
         <div className="pointer-events-auto">
