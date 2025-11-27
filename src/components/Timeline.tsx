@@ -34,12 +34,19 @@ const Timeline = () => {
     const current = new Date(currentDate).getTime();
     const daysSinceStart = (current - START_DATE) / (1000 * 60 * 60 * 24);
     const targetX = -daysSinceStart * PIXELS_PER_DAY;
+    const currentX = x.get();
+    
+    // Calculate how far off we are from target
+    const distance = Math.abs(currentX - targetX);
 
-    // Only animate to position during playback, not manual scrolling
+    // Only animate to position during playback, OR when clicking events (if distance is significant)
     if (isPlaying) {
       animate(x, targetX, { duration: 1, ease: "linear" });
+    } else if (distance > PIXELS_PER_DAY * 2) {
+      // Only animate if we're more than 2 days away (prevents snap-back after drag)
+      // This allows clicking events to work while preventing drag snap
+      animate(x, targetX, { duration: 0.6, ease: "easeInOut" });
     }
-    // Don't animate on manual changes - let user control position freely
   }, [currentDate, isDragging, isPlaying, x]);
 
   // Auto-play loop
