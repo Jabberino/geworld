@@ -160,7 +160,18 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
   // ... (rest of component)
 
   return (
-    <div className="cursor-move">
+    <div className="cursor-move globe-container">
+      <style jsx global>{`
+        .globe-container canvas {
+          pointer-events: auto !important;
+        }
+        .globe-container .scene-tooltip,
+        .globe-container .scene-nav-info,
+        .globe-container [class*="label"],
+        .globe-container [class*="text"] {
+          pointer-events: none !important;
+        }
+      `}</style>
       <Globe
         ref={globeEl}
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
@@ -186,16 +197,6 @@ const GlobeViz = ({ onCountryClick }: GlobeVizProps) => {
             document.body.style.cursor = 'pointer';
           } else {
             document.body.style.cursor = 'move';
-          }
-        }}
-        onLabelClick={(d: any) => {
-          const code = d.code;
-          if (!ASEAN_CODES.includes(code)) return;
-          const country = countries.find(c => c.code === code);
-          if (country) {
-            clickLock.current = true; // Lock to prevent globe click deselect
-            setSelectedCountry(country);
-            if (onCountryClick) onCountryClick(country);
           }
         }}
         polygonsData={polygonData}

@@ -171,7 +171,7 @@ const CountryPanel = () => {
             <div className="h-48 bg-slate-800/30 rounded-xl p-2 relative">
               {selectedCountry.metrics.some((m: any) => m.spotRate !== null) ? (
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={selectedCountry.metrics}>
+                  <LineChart data={selectedCountry.metrics.filter((m: any) => m.date >= '2025-01')}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
                     <XAxis 
                       dataKey="date" 

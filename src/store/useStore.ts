@@ -30,7 +30,7 @@ interface AppState {
 
 export const useStore = create<AppState>((set) => ({
   selectedCountry: null,
-  currentDate: '2025-01-01',
+  currentDate: '2025-03-15',
   isPlaying: false,
   isAutoPlayPaused: false,
   autoPlayTimer: 0,
@@ -54,7 +54,7 @@ export const useStore = create<AppState>((set) => ({
       const date = new Date(state.currentDate);
       date.setDate(date.getDate() + 7);
       // Loop back if end of year (simplified)
-      if (date.getFullYear() > 2025) return { currentDate: '2025-01-01' };
+      if (date.getFullYear() > 2025) return { currentDate: '2025-03-15' };
       return { currentDate: date.toISOString().split('T')[0] };
     }),
 }));
